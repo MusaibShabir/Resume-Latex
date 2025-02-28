@@ -1,290 +1,294 @@
-%%%%
-% MTecknology's Resume
-%%%%
-% Author: Michael Lustfield
-% License: CC-BY-4
-% - https://creativecommons.org/licenses/by/4.0/legalcode.txt
-%%%%
+\documentclass[8pt, a4paper]{article}
 
-\documentclass[letterpaper,10pt]{article}
-%%%%%%%%%%%%%%%%%%%%%%%
-%% BEGIN_FILE: mteck.sty
-%% NOTE: Everything between here and END_FILE can
-%% be relocated to "mteck.sty" and then included with:
-%\usepackage{mteck}
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % seperation between body and page edge from the top
+    bottom=2 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging 
+]{geometry} % for adjusting page geometry
+\usepackage[explicit]{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{35, 86, 145} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Musaib Shabir's CV},
+    pdfauthor={Musaib Shabir},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
 
-% Dependencies
-% NOTE: Some packages (lastpage, hyperref) require second build!
-\usepackage[empty]{fullpage}
-\usepackage{titlesec}
-\usepackage{enumitem}
-\usepackage[hidelinks]{hyperref}
-\usepackage{fancyhdr}
-\usepackage{fontawesome5}
-\usepackage{multicol}
-\usepackage{bookmark}
-\usepackage{lastpage}
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
 
-% Sans-Serif
-%\usepackage[sfdefault]{FiraSans}
-%\usepackage[sfdefault]{roboto}
-%\usepackage[sfdefault]{noto-sans}
-\usepackage[default]{sourcesanspro}
+\usepackage[default, type1]{sourcesanspro} 
 
-% Serif
-\usepackage{CormorantGaramond}
-\usepackage{charter}
+% Some settings:
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0.15cm} % set column seperation
 
-% Colors
-% Use with \color{Name}
-% Can wrap entire heading with {\color{accent} [...] }
-\usepackage{xcolor}
-\definecolor{accentTitle}{HTML}{0e6e55}
-\definecolor{accentText}{HTML}{0e6e55}
-\definecolor{accentLine}{HTML}{a16f0b}
-
-% Misc. Options
-\pagestyle{fancy}
-\fancyhf{}
-\fancyfoot{}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\urlstyle{same}
-
-% Adjust Margins
-\addtolength{\oddsidemargin}{-0.7in}
-\addtolength{\evensidemargin}{-0.5in}
-\addtolength{\textwidth}{1.19in}
-\addtolength{\topmargin}{-0.7in}
-\addtolength{\textheight}{1.4in}
-
-\setlength{\multicolsep}{-3.0pt}
-\setlength{\columnsep}{-1pt}
-\setlength{\tabcolsep}{0pt}
-\setlength{\footskip}{3.7pt}
-\raggedbottom
-\raggedright
-
-% ATS Readability
-\input{glyphtounicode}
-\pdfgentounicode=1
-
-%-----------------%
-% Custom Commands %
-%-----------------%
-
-% Centered title along with subtitle between HR
-% Usage: \documentTitle{Name}{Details}
-\newcommand{\documentTitle}[2]{
-  \begin{center}
-    {\Huge\color{accentTitle} #1}
-    \vspace{10pt}
-    {\color{accentLine} \hrule}
-    \vspace{2pt}
-    %{\footnotesize\color{accentTitle} #2}
-    \footnotesize{#2}
-    \vspace{2pt}
-    {\color{accentLine} \hrule}
-  \end{center}
-}
-
-% Create a footer with correct padding
-% Usage: \documentFooter{\thepage of X}
-\newcommand{\documentFooter}[1]{
-  \setlength{\footskip}{10.25pt}
-  \fancyfoot[C]{\footnotesize #1}
-}
-
-% Simple wrapper to set up page numbering
-% Usage: \numberedPages
-% WARNING: Must run pdflatex twice!
-\newcommand{\numberedPages}{
-  \documentFooter{\thepage/\pageref{LastPage}}
-}
-
-% Section heading with horizontal rule
-% Usage: \section{Title}
 \titleformat{\section}{
-  \vspace{-5pt}
-  \color{accentText}
-  \raggedright\large\bfseries
-}{}{0em}{}[\color{accentLine}\titlerule]
-
-% Section heading with separator and content on same line
-% Usage: \tinysection{Title}
-\newcommand{\tinysection}[1]{
-  \phantomsection
-  \addcontentsline{toc}{section}{#1}
-  {\large{\bfseries\color{accentText}#1} {\color{accentLine} |}}
-}
-
-% Indented line with arguments left/right aligned in document
-% Usage: \heading{Left}{Right}
-\newcommand{\heading}[2]{
-  \hspace{10pt}#1\hfill#2\\
-}
-
-% Adds \textbf to \heading
-\newcommand{\headingBf}[2]{
-  \heading{\textbf{#1}}{\textbf{#2}}
-}
-
-% Adds \textit to \heading
-\newcommand{\headingIt}[2]{
-  \heading{\textit{#1}}{\textit{#2}}
-}
-
-% Template for itemized lists
-% Usage: \begin{resume_list} [items] \end{resume_list}
-\newenvironment{resume_list}{
-  \vspace{-7pt}
-  \begin{itemize}[itemsep=-2px, parsep=1pt, leftmargin=30pt]
+    % avoid page braking right after the section title
+    \needspace{4\baselineskip}
+    % make the font size of the section title large and color it with the primary color
+    \Large\color{primaryColor}
 }{
-  \end{itemize}
-  %\vspace{-2pt}
-}
+}{
+}{
+    % print bold title, give 0.15 cm space and draw a line of 0.8 pt thickness
+    % from the end of the title to the end of the body
+    \textbf{#1}\hspace{0.15cm}\titlerule[0.8pt]\hspace{-0.1cm}
+}[] % section title formatting
 
-% Formats an item to use as an itemized title
-% Usage: \itemTitle{Title}
-\newcommand{\itemTitle}[1]{
-  \item[] \underline{#1}\vspace{4pt}
-}
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
 
-% Bullets used in itemized lists
-\renewcommand\labelitemi{--}
-
-%% END_FILE: mteck.sty
-%%%%%%%%%%%%%%%%%%%%%%
-
-
-%===================%
-% John Doe's Resume %
-%===================%
-
-%\numberedPages % NOTE: lastpage requires a second build
-%\documentFooter{\thepage of 2} % Does similar without using lastpage
-\begin{document}
-
-  %---------%
-  % Heading %
-  %---------%
-
-  \documentTitle{John Doe}{
-    % Web Version
-    %\raisebox{-0.05\height} \faPhone\ [redacted - web copy] ~
-    %\raisebox{-0.15\height} \faEnvelope\ [redacted - web copy] ~
-    %%
-    \href{tel:1234567890}{
-      \raisebox{-0.05\height} \faPhone\ 123-456-7890} ~ | ~
-    \href{mailto:user@domain.tld}{
-      \raisebox{-0.15\height} \faEnvelope\ USER@domain.tld} ~ | ~
-    \href{https://linkedin.com/in/USER/}{
-      \raisebox{-0.15\height} \faLinkedin\ linkedin.com/in/USER} ~ | ~
-    \href{https://github.com/USER}{
-      \raisebox{-0.15\height} \faGithub\ github.com/USER}
-  }
-
-  %---------%
-  % Summary %
-  %---------%
-
-  \tinysection{Summary}
-  Simplified version of a monstrosity that I built back in college using current best practices.
-
-  %--------%
-  % Skills %
-  %--------%
-
-  \section{Skills}
-
-  \begin{multicols}{2}
-    \begin{itemize}[itemsep=-2px, parsep=1pt, leftmargin=75pt]
-      \item[\textbf{Automation}] SaltStack, Ansible, Chef, Puppet
-      \item[\textbf{Cloud}] Salt-Cloud, Linode, GCP, AWS
-      \item[\textbf{Languages}] Python, Bash, PHP, Perl, VB/C\#.Net
-      \item[\textbf{OS}] Debian, Ubuntu, CentOS, BSD, AIX
-      \item[\textbf{Policies}] CIS, SOC2, PCI-DSS, GDPR, ITIL
-      \item[\textbf{Testing}] Pytest, Docker, CircleCI, Jenkins, Inspec
+% \renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt, % Keep left margin unchanged
+    ]
+}{
     \end{itemize}
-  \end{multicols}
+} % new environment for highlights
 
-  %------------%
-  % Experience %
-  %------------%
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
 
-  \section{Experience}
 
-  \headingBf{Consulting Corp}{Jul 2015 -- Jun 2025}
-  \headingIt{Senior DevOps Engineer (FTE Consultant)}{}
-  \begin{resume_list}
-    \itemTitle{Client: Notable Placement}
-    \item Analyzed network traffic patterns to identify bottlenecks and optimize performance
-    \item Implemented firewall rules to enhance network security and prevent unauthorized access
-    \item Conducted regular vulnerability assessments and applied patches to secure systems
-    \item Collaborated with cross-functional teams to streamline IT processes and improve efficiency
-    \vspace{3pt}
-    \itemTitle{Client: Challenges Unlimited}
-    \item Configured monitoring tools to track system performance and troubleshoot issues proactively
-    \item Automated routine tasks using scripts to reduce manual effort and increase productivity
-    \item Documented system configurations and procedures for knowledge sharing within the team
-    \item Participated in disaster recovery planning and drills to ensure business continuity in case of emergencies
-    \vspace{3pt}
-    \itemTitle{Client: Broken Galleries}
-    \item Implemented cloud migration strategies to move applications to a hybrid environment
-    \item Optimized database performance through indexing and query tuning techniques
-    \item Conducted capacity planning and scalability assessments to support future growth
-    \item Provided on-call support for critical issues and worked on root cause analysis for incident resolution
-  \end{resume_list}
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0.2 cm + 0.00001 cm
+    }{
+        0.2 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
 
-  \headingBf{HealthCo Industries}{Feb 2011 -- Mar 2016}
-  \headingIt{Senior Systems Administrator (SRE)}{}
-  \begin{resume_list}
-    \item Managed virtualized server environment spanning multiple data centers
-    \item Oversaw migration of critical business applications to cloud-based platforms
-    \item Configured and monitored network security measures, including firewalls and intrusion detection systems
-    \item Implemented multi-factor authentication for remote access to company systems
-    \item Streamlined patch management process, reducing vulnerabilities and downtime
-    \item Conducted regular vulnerability assessments and penetration testing
-    \item Automated server provisioning and configuration management tasks
-    \item Maintained documentation for IT policies and procedures
-    \item Coordinated responses to cybersecurity incidents with internal teams and external vendors
-  \end{resume_list}
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 2 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} 
+\newenvironment{twocolentrytwo}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 3.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+}
+% new environment for two column entries
 
-  %-----------%
-  % Education %
-  %-----------%
+\newenvironment{threecolentry}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{1 cm, \fill, 4.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for three column entries
 
-  \section{Education}
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1}
+}{
+    \par\kern\topsep
+} % new environment for the header
 
-  \headingBf{State University}{} % Note: Adding year(s) exposes an implied age
-  \headingIt{Bachelor of Science in Computer Information Systems}{}
-  \headingIt{Minors: Networking ; Network Security}{}
 
-  \vspace{5pt}
-  \headingBf{Certifications}{}
-  \begin{resume_list}
-    \item Salt \hspace{2pt}- SaltStack Certified Engineer
-    \item GCP - Professional Cloud Architect
-  \end{resume_list}
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
 
-  %----------------------------%
-  % Extracurricular Activities %
-  %----------------------------%
+% new command for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
 
-  \section{Projects}
 
-  \headingBf{Hospital / Health Science IRB}{Mar 2015 -- Present}
-  \begin{resume_list}
-    \item Served as non-scientific/unaffiliated patient-representative
-    \item Reviewed patient consent forms for completeness, accuracy, and clarity
-    \item Became familiar with industry standards and regulations (OHRP, HIPAA)
-  \end{resume_list}
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{}
+    \begin{header}
+        \fontsize{30 pt}{30 pt}
+        \textbf{MUSAIB SHABIR}
 
-  \headingBf{Debian Linux}{Jan 2001 -- Present}
-  \begin{resume_list}
-    \item Maintained packages in Debian repositories
-    \item Reviewed and sponsored packages on behalf of prospective Developers
-    \item Resolved bugs reported in bug tracking system
-  \end{resume_list}
+        \vspace{0.3 cm}
+
+        \normalsize
+        \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13cm}Srinagar, J\&K, 190010}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{mailto:itzmusaibshabir@gmail.com}{{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}itzmusaibshabir@gmail.com}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{tel:+91-78898-16656}{{\footnotesize\faPhone*}\hspace*{0.13cm}+91 78898 16656}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://linkedin.com/in/musaibshabir}{{\footnotesize\faLinkedinIn}\hspace*{0.13cm}musaibshabir}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://github.com/MusaibShabir}{{\footnotesize\faGithub}\hspace*{0.13cm}MusaibShabir}}%
+           \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://leetcode.com/u/musaibshabir/}{{\footnotesize\faLink}\hspace*{0.13cm}Leet Code}}%
+           \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://www.hackerrank.com/profile/musaibshabir}{{\footnotesize\faLink}\hspace*{0.13cm}Hacker Rank}}%
+
+        
+    
+    \end{header}
+    \vspace{0.1 cm - 0.1 cm}
+
+
+    \section{Summary}
+
+
+
+        
+        \begin{onecolentry}
+            Computer Science Engineering graduate with a strong foundation in software engineering principles and problem solving. Experienced in modern Android development and committed to continuous learning to stay up-to-date with evolving technologies. The aim is to leverage Kotlin Multi-platform to build cross-platform applications. 
+        \end{onecolentry}
+
+      
+    \section{Skills}
+
+    \begin{onecolentry}
+    \begin{highlightsforbulletentries}
+
+    \item \textbf{Programming Languages:} Kotlin, Java, C++, Python
+    \item \textbf{Android Development:} Android SDK, Jetpack Compose, Room, Hilt, Coroutines \& Flow, Materiel Design, MVVM
+    \item \textbf{Backend \& APIs:} Firebase, Google Cloud, Ktor, RESTful API, OkHttp, Kotlin Serialization, SQL
+    \item \textbf{Software Development \& Methodologies:} Agile Methodology, Data Structures \& Algorithms 
+    \item \textbf{Development Tools \& Version Control:} Android Studio, Git, GitHub
+
+    \end{highlightsforbulletentries}
+\end{onecolentry}
+
+    \section{Projects}
+
+
+
+        
+        \begin{twocolentry}{
+            \href{https://github.com/MusaibShabir/Found_It}{GitHub}
+        }
+            \textbf{Found It}
+            \begin{highlights}
+                \item  \textbf{Led a team of 3 developers} in designing \& developing a mobile app that connects users who have lost or found items.
+
+                \item Followed the Agile methodology to manage development efficiently, ensuring iterative improvements and adaptability. 
+                \item Implemented a \textbf{matching algorithm }to improve the accuracy of connecting lost and found items.  
+                \item Using \textbf{Google Cloud Functions} to run the matching algorithm remotely, enabling efficient and scalable processing.  
+                \item Integrated \textbf{Firebase Realtime Database} \& \textbf{Cloud Storage} for secure and real-time data management.  
+                \item Enhanced location-based discovery using \textbf{Google Maps} \& \textbf{Reverse Geo-coding.}  
+                \item Developed \textbf{User Authentication} using Firebase Authentication for secure access.  
+            \end{highlights}
+        \end{twocolentry}
+
+
+        \vspace{0.2 cm}
+
+        \begin{twocolentry}{
+            \href{https://github.com/MusaibShabir/Account-Book}{GitHub}
+        }
+            \textbf{Hisaab}
+            \begin{highlights}
+                \item Developed an app for managing account books to help users track and manage financial transactions between multiple users.
+                 \item Designed an intuitive UI/UX using Jetpack Compose to ensure a smooth user experience  
+                  \item Integrated Room Database for efficient local data storage and offline support.  
+                   \item Built a clear summary dashboard to display total balances and detailed financial insights.  
+            \end{highlights}
+        \end{twocolentry}
+    \section{Experience}
+
+        \begin{twocolentrytwo}{
+        Jan 2023 – Feb 2023
+        }
+            \textbf{NIT Srinagar}, Android Developer Intern \begin{highlights}
+                \item Developed \textit{Number Ninja}, a mental math game that improves user engagement through intuitive UI/UX design.  
+                \item Implemented state management and component reusability, ensuring clean and maintainable code.  
+                \item Using Jetpack Compose, MVVM architecture, and Jetpack Libraries to optimize performance and scalability.  
+                 
+               
+
+                \end{highlights}
+                 \end{twocolentrytwo}
+          
+    \section{Education}
+
+	\begin{threecolentry}{\textbf{B.Tech}}{
+			Nov 2020 – Nov 2024
+		}
+		\textbf{University of Kashmir}, Computer Science Engineering\end{threecolentry}
+
+    
 
 \end{document}
