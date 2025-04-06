@@ -1,4 +1,5 @@
 \documentclass[8pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
 
 % Packages:
 \usepackage[
@@ -14,7 +15,8 @@
 \usepackage{tabularx} % for making tables with fixed width columns
 \usepackage{array} % tabularx requires this
 \usepackage[dvipsnames]{xcolor} % for coloring text
-\definecolor{primaryColor}{RGB}{35, 86, 145} % define primary color
+\definecolor{primaryColor}{RGB}{28, 55, 192} % define primary color
+\definecolor{starcolor}{HTML}{F3A81B}
 \usepackage{enumitem} % for customizing lists
 \usepackage{fontawesome5} % for using icons
 \usepackage{amsmath} % for math
@@ -34,6 +36,8 @@
 \usepackage{ifthen} % for conditional statements
 \usepackage{needspace} % for avoiding page brake right after the section title
 \usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+\usepackage{svg}
+
 
 % Ensure that generate pdf is machine readable/ATS parsable:
 \ifPDFTeX
@@ -58,7 +62,7 @@
     % avoid page braking right after the section title
     \needspace{4\baselineskip}
     % make the font size of the section title large and color it with the primary color
-    \Large\color{primaryColor}
+    \fontsize{12 pt}{10 pt}\selectfont\color{primaryColor}
 }{
 }{
 }{
@@ -149,7 +153,7 @@
 } % new environment for three column entries
 
 \newenvironment{header}{
-    \setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1}
+    \setlength{\topsep}{0pt}\par\kern\topsep\raggedright\color{primaryColor}\linespread{1}
 }{
     \par\kern\topsep
 } % new environment for the header
@@ -170,13 +174,17 @@
     \newsavebox\ANDbox
     \sbox\ANDbox{}
     \begin{header}
-        \fontsize{30 pt}{30 pt}
+        \fontsize{22 pt}{22 pt}
         \textbf{MUSAIB SHABIR}
 
         \vspace{0.3 cm}
 
         \normalsize
-        \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13cm}Srinagar, J\&K, 190010}%
+        \mbox{\hrefWithoutArrow{tel:+91-78898-16656}{{\footnotesize\faPhone*}\hspace*{0.13 cm}+91 78898 16656}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13 cm}Srinagar, J\&K, 190010}%
         \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
@@ -184,10 +192,7 @@
         \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
-        \mbox{\hrefWithoutArrow{tel:+91-78898-16656}{{\footnotesize\faPhone*}\hspace*{0.13cm}+91 78898 16656}}%
-        \kern 0.25 cm%
-        \AND%
-        \kern 0.25 cm%
+        
         \mbox{\hrefWithoutArrow{https://linkedin.com/in/musaibshabir}{{\footnotesize\faLinkedinIn}\hspace*{0.13cm}musaibshabir}}%
         \kern 0.25 cm%
         \AND%
@@ -196,11 +201,12 @@
            \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
-        \mbox{\hrefWithoutArrow{https://leetcode.com/u/musaibshabir/}{{\footnotesize\faLink}\hspace*{0.13cm}Leet Code}}%
+        \mbox{\hrefWithoutArrow{https://leetcode.com/u/musaibshabir/}{{\footnotesize\includesvg[width = 7 pt]{leetcode.svg}}\hspace*{0.13cm}Leet Code}}%
            \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
-        \mbox{\hrefWithoutArrow{https://www.hackerrank.com/profile/musaibshabir}{{\footnotesize\faLink}\hspace*{0.13cm}Hacker Rank}}%
+        \mbox{\hrefWithoutArrow{https://www.hackerrank.com/profile/musaibshabir}{{\footnotesize\includesvg[width = 7 pt]{hackerrank.svg}}\hspace*{0.13cm}Hacker Rank}}%
+
 
         
     
@@ -214,7 +220,7 @@
 
         
         \begin{onecolentry}
-            Computer Science Engineering graduate with a strong foundation in software engineering principles and problem solving. Experienced in modern Android development and committed to continuous learning to stay up-to-date with evolving technologies. The aim is to leverage Kotlin Multi-platform to build cross-platform applications. 
+            CSE graduate experienced in Android development with a strong foundation in software engineering. Committed to continuous learning to stay current with tech trends, with a future focus on building cross-platform applications using Kotlin Multiplatform.
         \end{onecolentry}
 
       
@@ -227,10 +233,10 @@
     \item \textbf{Android Development:} Android SDK, Jetpack Compose, Room, Hilt, Coroutines \& Flow, Materiel Design, MVVM
     \item \textbf{Backend \& APIs:} Firebase, Google Cloud, Ktor, RESTful API, OkHttp, Kotlin Serialization, SQL
     \item \textbf{Software Development \& Methodologies:} Agile Methodology, Data Structures \& Algorithms 
-    \item \textbf{Development Tools \& Version Control:} Android Studio, Git, GitHub
+    \item \textbf{Tools:} Android Studio, IntelliJ IDEA, Git, GitHub, Figma
 
     \end{highlightsforbulletentries}
-\end{onecolentry}
+    \end{onecolentry}
 
     \section{Projects}
 
@@ -254,7 +260,7 @@
         \end{twocolentry}
 
 
-        \vspace{0.2 cm}
+        
 
         \begin{twocolentry}{
             \href{https://github.com/MusaibShabir/Account-Book}{GitHub}
@@ -264,24 +270,53 @@
                 \item Developed an app for managing account books to help users track and manage financial transactions between multiple users.
                  \item Designed an intuitive UI/UX using Jetpack Compose to ensure a smooth user experience  
                   \item Integrated Room Database for efficient local data storage and offline support.  
-                   \item Built a clear summary dashboard to display total balances and detailed financial insights.  
+                    
             \end{highlights}
         \end{twocolentry}
+
+        \begin{twocolentry}{
+            \href{https://musaibshabir.github.io/Portfolio/}{Visit}
+        }
+        
+            \textbf{Portfolio}
+            \begin{highlights}
+                \item Developed my personal portfolio website using \textbf{Kobweb}, built on top of \textbf{Kotlin} \& \textbf{Compose HTML}, the project has received \textbf{\textcolor{starcolor}{20 Stars}} in \hrefWithoutArrow{https://github.com/MusaibShabir/Portfolio}{GitHub.} \end{highlights} \end{twocolentry}
+      
+        
     \section{Experience}
+                 
+                 \begin{twocolentrytwo}{
+        Mar 2023 – May 2023
+        }
+            \textbf{Ralith Milith}, Web Developer \begin{highlights}
+                
+                \item Sole developer of the official website for Anti-Drug NGO, aimed at raising awareness and enabling anonymous user messaging using Google Sheets as a free backend.
+                
+
+
+                
+                 
+               
+
+                \end{highlights}
+                 \end{twocolentrytwo}
+                 \vspace{5 pt}
 
         \begin{twocolentrytwo}{
         Jan 2023 – Feb 2023
         }
             \textbf{NIT Srinagar}, Android Developer Intern \begin{highlights}
                 \item Developed \textit{Number Ninja}, a mental math game that improves user engagement through intuitive UI/UX design.  
-                \item Implemented state management and component reusability, ensuring clean and maintainable code.  
                 \item Using Jetpack Compose, MVVM architecture, and Jetpack Libraries to optimize performance and scalability.  
                  
                
 
                 \end{highlights}
                  \end{twocolentrytwo}
-          
+
+
+
+    
     \section{Education}
 
 	\begin{threecolentry}{\textbf{B.Tech}}{
